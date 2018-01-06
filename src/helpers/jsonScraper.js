@@ -53,6 +53,11 @@ const getCreationTime = (data) => {
   return newDate.toDateString()
 }
 
+const set = (dataBlocks, filterName) => {
+  let newBlock = dataBlocks.filter((block) => (block['filter'] == filterName))
+  return newBlock
+}
+
 module.exports = {
   getUserPage,
   getHashtag,
@@ -63,5 +68,6 @@ module.exports = {
   getFilter,
   getPhotoLink,
   getInstagramLink,
-  getCreationTime
+  getCreationTime,
+  set
 }

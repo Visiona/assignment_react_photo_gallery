@@ -11,19 +11,19 @@ const {
   getInstagramLink,
   getCreationTime } = require('../../helpers/jsonScraper');
 
-  // addDefaultSrc(ev){
-  //   ev.target.src = '../../../public/320x320.png'
-  // }
-  // <img onError={this.addDefaultSrc} src={getPhotoLink(photoData)} alt="" />
 
 const PhotoBox = (props) => {
 
+  // addDefaultSrc = (ev) => {
+  //   ev.target.src = '../../../public/320x320.png'
+  // }
+  // <img onError={this.addDefaultSrc} src={getPhotoLink(photoData)} alt="" />
   const {photoData} = props
 
   return (
     <div className="thumbnail">
       <a href={getInstagramLink(photoData)} target="_blank">
-        <img onError='' src={getPhotoLink(photoData)} alt="" />
+        <img onError='{this.addDefaultSrc}' src={getPhotoLink(photoData)} alt="" />
       </a>
       <div className="caption">
         <h4>
