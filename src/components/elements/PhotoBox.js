@@ -1,66 +1,50 @@
 import React from 'react'
-import instagramResponse from '../../photos.js'
+const {
+  getUserPage,
+  getHashtag,
+  getUserRealName,
+  getCommentsCount,
+  getLikesCount,
+  getUserName,
+  getFilter,
+  getPhotoLink,
+  getInstagramLink,
+  getCreationTime } = require('../../helpers/jsonScraper');
 
-const photoData = instagramResponse['data'][0];
+  // addDefaultSrc(ev){
+  //   ev.target.src = '../../../public/320x320.png'
+  // }
+  // <img onError={this.addDefaultSrc} src={getPhotoLink(photoData)} alt="" />
 
-const getUserPage = (data) => {
-  return 'https://instagram.com/' + data['user']['username']
-}
+const PhotoBox = (props) => {
 
-const getHashtag = (data) => {
-  return data['caption']['text']
-}
-
-const getUserRealName = (data) => {
-  if (data['users_in_photo']['users']['full_name']) {
-    return data['users_in_photo']['users']['full_name']
-  }
-}
-
-
-const getCommentsCount = (data) => {
-  return data['comments']['count']
-}
-
-const getLikesCount = (data) => {
-  return data['likes']['count']
-}
-
-const getUserName = (data) => {
-  return data['user']['username']
-}
-
-const getFilter = (data) => {
-  return data['filter']
-}
-
-const getPhotoLink = (data) => {
-  return data['images']['low-resolution']['url']
-}
-
-const getInstagramLink = (data) => {
-  return data['link']
-}
-
-const getCreationTime = (data) => {
-  let date = data['created_time'] + '999';
-  let newDate = new Date( parseInt(date) );
-  return newDate.toDateString()
-}
-
-const PhotoBox = ({link, children}) => {
+  const {photoData} = props
 
   return (
     <div className="thumbnail">
-      <img src="..." alt="..." />
+      <a href={getInstagramLink(photoData)} target="_blank">
+        <img onError='' src={getPhotoLink(photoData)} alt="" />
+      </a>
       <div className="caption">
-        <h3>Thumbnail label</h3>
-        <p>
+        <h4>
+          <a href={getUserPage(photoData)} target="_blank">
+            {getUserName(photoData)}
+          </a>
+        </h4>
+        <em>{getUserRealName(photoData)}</em>
+        <br/><small>
           {getCreationTime(photoData)}
-          {getUserName(photoData)}
-          {getCommentsCount(photoData)}
+        </small>
+        <p class="text-success text-left">
+          {getLikesCount(photoData)} Likes
+          <br/>
+          {getCommentsCount(photoData)} Comments
         </p>
-        <p><a href="#" className="btn btn-primary" role="button">Button</a> <a href="#" className="btn btn-default" role="button">Button</a></p>
+        <p>
+          Filter: <mark>{getFilter(photoData)}</mark>
+        </p>
+          <mark>{getHashtag(photoData)}</mark>
+
       </div>
     </div>
   )
