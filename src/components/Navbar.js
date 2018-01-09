@@ -2,7 +2,9 @@ import React, {Component} from 'react'
 import InputGroup from './elements/InputGroup'
 import Dropdown from './elements/Dropdown'
 import Gallery from './Gallery'
-
+import Pagination from './Pagination'
+import instagramResponse from '../photos.js'
+import {set} from '../helpers/jsonScraper'
 
 const optionsFilters = [
   'All',
@@ -16,37 +18,64 @@ const optionsFilters = [
 
 class Navbar extends Component {
 
-  constructor() {
-    super()
+
+  constructor(props) {
+    super(props)
     this.state = {
-      filter: 'All'
+      filter: 'All',
+      currentPage: '1',
+      totalPages: Math.ceil(instagramResponse['data'].length/12),
+      filteredPhotos: instagramResponse['data'],
+      currentPhotos: instagramResponse['data'].slice(0, 12)
     }
   }
 
-  onChangeInput = (e) => {
+
+
+  onChangeFilter = (e) => {
+
+    if (e.target.value !== 'All') {
+      this.setState({
+        filter: e.target.value,
+        filteredPhotos: set(instagramResponse['data'], e.target.value)
+      })
+    } else {
+      this.setState({
+        filter: 'All',
+        filteredPhotos: instagramResponse['data']
+      })
+    }
+  }
+
+  onChangePage = (e) => {
+    const {filteredPhotos, allPhotosData} = this.state;
+    console.log('page number in on change is ' + e.target.key)
+    let indexOfLastPhoto = (e.target.value)*12;
+    let indexOfFirstPhoto = indexOfLastPhoto - 12;
+    let currentPhotos = filteredPhotos.slice(indexOfFirstPhoto, indexOfLastPhoto)
     this.setState({
-      filter: e.target.value
+      currentPage: e.target.key,
+      currentPhotos: filteredPhotos.slice(indexOfFirstPhoto, indexOfLastPhoto)
     })
   }
 
   render() {
-    const {filter} = this.state
+    const {filter, totalPages, currentPage, currentPhotos, filteredPhotos} = this.state
+    const allPhotosData = instagramResponse['data'];
+
     return (
-      <div className='navbar-container'>
-      <nav class="navbar navbar-default">
-        <div class="container-fluid">
+    <div className='navbar-container'>
+      <nav className="navbar navbar-default">
+        <div className="container-fluid">
 
-
-          <form class="navbar-form">
-
+          <form className="navbar-form">
             <InputGroup name='Search' labelText='Search'>
-              <input type="text" class="form-control" placeholder="Search" />
+              <input type="text" className="form-control" placeholder="Search" />
             </InputGroup>
 
-
-            <ul class="nav navbar-nav navbar-right">
+            <ul className="nav navbar-nav navbar-right">
               <InputGroup name='filters' labelText='Filters'>
-                <Dropdown name='filters' value={filter} options={optionsFilters} onChange={this.onChangeInput} />
+                <Dropdown name='filters' value={filter} options={optionsFilters} onChange={this.onChangeFilter} />
               </InputGroup>
             </ul>
 
@@ -55,11 +84,16 @@ class Navbar extends Component {
       </nav>
 
       <div className='container'>
-        <Gallery filter={filter} onChange={this.onChangeInput} />
+        <Gallery  filter={filter}
+                  currentPhotos={currentPhotos}
+                  filteredPhotos={filteredPhotos}
+                  allPhotosData={allPhotosData}
+                  onChangeFilter={this.onChangeFilter} />
       </div>
-
-
-      </div>
+      <Pagination currentPage={currentPage}
+                  totalPages={totalPages}
+                  onChangePage={this.onChangePage} />
+    </div>
     )
   }
 }

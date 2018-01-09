@@ -12,7 +12,7 @@ const Dropdown = (props) => {
 
 
   return (
-    <select classNane='form-contorl' {...restOfProps}>
+    <select className='form-contorl' {...restOfProps}>
       {optionElements}
     </select>
   )

@@ -1,8 +1,8 @@
 import React from 'react'
 
-const Alert = ({type, allPhotosNumber}) => (
+const Alert = ({type, filteredPhotos}) => (
   <div className={`alert alert-${type}`} role='alert'>
-    {allPhotosNumber} Results
+    {filteredPhotos.length} Results
   </div>
 )
 

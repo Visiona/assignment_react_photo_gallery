@@ -35,7 +35,7 @@ const PhotoBox = (props) => {
         <br/><small>
           {getCreationTime(photoData)}
         </small>
-        <p class="text-success text-left">
+        <p className="text-success text-left">
           {getLikesCount(photoData)} Likes
           <br/>
           {getCommentsCount(photoData)} Comments
