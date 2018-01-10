@@ -14,16 +14,13 @@ const {
 
 const PhotoBox = (props) => {
 
-  // addDefaultSrc = (ev) => {
-  //   ev.target.src = '../../../public/320x320.png'
-  // }
-  // <img onError={this.addDefaultSrc} src={getPhotoLink(photoData)} alt="" />
-  const {photoData} = props
+  const {photoData, addDefaultSrc} = props
+
 
   return (
     <div className="thumbnail">
       <a href={getInstagramLink(photoData)} target="_blank">
-        <img onError='{this.addDefaultSrc}' src={getPhotoLink(photoData)} alt="" />
+        <img onError={addDefaultSrc} src={getPhotoLink(photoData)} alt="" />
       </a>
       <div className="caption">
         <h4>
@@ -33,7 +30,8 @@ const PhotoBox = (props) => {
         </h4>
         <em>{getUserRealName(photoData)}</em>
         <br/><small>
-          {getCreationTime(photoData)}
+          {getCreationTime(photoData).toDateString() }<br/>
+          {getCreationTime(photoData).toLocaleTimeString()}
         </small>
         <p className="text-success text-left">
           {getLikesCount(photoData)} Likes

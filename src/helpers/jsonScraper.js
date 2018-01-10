@@ -50,13 +50,29 @@ const getInstagramLink = (data) => {
 const getCreationTime = (data) => {
   let date = data['created_time'] + '999';
   let newDate = new Date( parseInt(date) );
-  return newDate.toDateString()
+  // return newDate.toDateString()
+  return newDate
 }
 
 const set = (dataBlocks, filterName) => {
   let newBlock = dataBlocks.filter((block) => (block['filter'] == filterName))
   return newBlock
 }
+
+const sortedPhotosDown = (dataSet) => {
+  let sorted = dataSet.sort(function(photo1, photo2) {
+    return photo2['created_time'] - photo1['created_time']
+  });
+  return sorted
+}
+
+const sortedPhotosUp = (dataSet) => {
+  let sorted = dataSet.sort(function(photo1, photo2) {
+    return photo1['created_time'] - photo2['created_time']
+  });
+  return sorted
+}
+
 
 module.exports = {
   getUserPage,
@@ -69,5 +85,7 @@ module.exports = {
   getPhotoLink,
   getInstagramLink,
   getCreationTime,
+  sortedPhotosUp,
+  sortedPhotosDown,
   set
 }

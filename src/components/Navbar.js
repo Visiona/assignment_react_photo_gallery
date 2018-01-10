@@ -4,8 +4,9 @@ import Dropdown from './elements/Dropdown'
 import Gallery from './Gallery'
 import Pagination from './Pagination'
 import instagramResponse from '../photos.js'
-import {set} from '../helpers/jsonScraper'
+import {set, sortedPhotosUp, sortedPhotosDown} from '../helpers/jsonScraper'
 import SortButton from './elements/SortButton'
+import placeholderImg from '../320x320.png';
 
 const optionsFilters = [
   'All',
@@ -27,7 +28,8 @@ class Navbar extends Component {
       currentPage: '1',
       totalPages: Math.ceil(instagramResponse['data'].length/12),
       filteredPhotos: instagramResponse['data'],
-      currentPhotos: instagramResponse['data'].slice(0, 12)
+      currentPhotos: instagramResponse['data'].slice(0, 12),
+      order: 'none'
     }
   }
 
@@ -55,6 +57,31 @@ class Navbar extends Component {
     }
   }
 
+  onSorting = (e) => {
+    const {filteredPhotos, order} = this.state;
+    console.log('I am in onSorting')
+    console.log( filteredPhotos )
+    console.log( sortedPhotosUp(filteredPhotos) )
+
+    if (order === 'decrease') {
+      this.setState({
+        filteredPhotos: sortedPhotosDown(filteredPhotos),
+        currentPhotos: sortedPhotosDown(filteredPhotos).slice(0, 12),
+        order: 'increase'
+      })
+    } else {
+      this.setState({
+        filteredPhotos: sortedPhotosUp(filteredPhotos),
+        currentPhotos: sortedPhotosUp(filteredPhotos).slice(0, 12),
+        order: 'decrease'
+      })
+    }
+  }
+
+  addDefaultSrc = (ev) => {
+    ev.target.src = placeholderImg
+  }
+
   onChangePage = (e, i) => {
     const {filteredPhotos, allPhotosData, totalPages} = this.state;
     console.log('page number in on change is ' + i)
@@ -70,7 +97,7 @@ class Navbar extends Component {
   }
 
   render() {
-    const {filter, totalPages, currentPage, currentPhotos, filteredPhotos} = this.state
+    const {filter, totalPages, currentPage, currentPhotos, filteredPhotos, order} = this.state
     const allPhotosData = instagramResponse['data'];
 
     return (
@@ -86,7 +113,7 @@ class Navbar extends Component {
             <ul className="nav navbar-nav navbar-right">
 
 
-              <SortButton order='growing' />
+              <SortButton onSorting={this.onSorting} order={order} />
 
 
               <InputGroup name='filters' labelText='Filters'>
@@ -103,7 +130,8 @@ class Navbar extends Component {
                   currentPhotos={currentPhotos}
                   filteredPhotos={filteredPhotos}
                   allPhotosData={allPhotosData}
-                  onChangeFilter={this.onChangeFilter} />
+                  onChangeFilter={this.onChangeFilter}
+                  addDefaultSrc={this.addDefaultSrc} />
       </div>
       <Pagination currentPage={currentPage}
                   totalPages={totalPages}

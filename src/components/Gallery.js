@@ -3,12 +3,12 @@ import PhotoBox from './elements/PhotoBox'
 import Alert from './elements/Alert'
 
 
-const Gallery = ({filter, currentPhotos, filteredPhotos, allPhotosData, onChangeFilter}) => {
+const Gallery = ({filter, currentPhotos, filteredPhotos, allPhotosData, onChangeFilter, addDefaultSrc}) => {
 
   const allPhotosNumber = filteredPhotos.length;
   const photoBoxes = currentPhotos.map((photoData) => (
     <div className="col-sm-3 " key={photoData['created_time']} >
-      <PhotoBox photoData={photoData} />
+      <PhotoBox photoData={photoData} addDefaultSrc={addDefaultSrc} />
     </div>
   ))
 

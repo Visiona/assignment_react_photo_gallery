@@ -6,9 +6,9 @@ const Pagination = ({currentPage, totalPages, onChangePage}) => {
 
   for(let i=1; i<=totalPages; i++) {
     if (i === parseInt(currentPage)) {
-      listPages.push(<li className='active' ><a onClick={(e) => onChangePage(e, i)} key={i}>{i}</a></li>)
+      listPages.push(<li className='active' key={i}><a onClick={(e) => onChangePage(e, i)} >{i}</a></li>)
     } else {
-      listPages.push(<li ><a onClick={(e) => onChangePage(e, i)} key={i}>{i}</a></li>)
+      listPages.push(<li key={i}><a onClick={(e) => onChangePage(e, i)} >{i}</a></li>)
     }
   }
 
