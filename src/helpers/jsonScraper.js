@@ -13,13 +13,13 @@ const getHashtag = (data) => {
   if (arr != null) {
     return arr.join(' ')
   } else {
-    return null
+    return ''
   }
 }
 
 const getUserRealName = (data) => {
   if (data['users_in_photo'].length > 0) {
-    return 'Author name: ' + data['users_in_photo'][0]['user']['full_name']
+    return data['users_in_photo'][0]['user']['full_name']
   }
 }
 
@@ -73,6 +73,16 @@ const sortedPhotosUp = (dataSet) => {
   return sorted
 }
 
+const searchPhrase = (dataSet, phrase) => {
+  let foundPhotos = [];
+  for(let i=0; i < dataSet.length; i++) {
+    if ( getUserName(dataSet[i]).includes(phrase) || getHashtag(dataSet[i]).includes(phrase) ) {
+      foundPhotos.push(dataSet[i])
+    }
+  }
+  return foundPhotos
+}
+
 
 module.exports = {
   getUserPage,
@@ -87,5 +97,6 @@ module.exports = {
   getCreationTime,
   sortedPhotosUp,
   sortedPhotosDown,
+  searchPhrase,
   set
 }

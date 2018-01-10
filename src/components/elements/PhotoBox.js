@@ -28,7 +28,7 @@ const PhotoBox = (props) => {
             {getUserName(photoData)}
           </a>
         </h4>
-        <em>{getUserRealName(photoData)}</em>
+        <em>Author name: {getUserRealName(photoData)}</em>
         <br/><small>
           {getCreationTime(photoData).toDateString() }<br/>
           {getCreationTime(photoData).toLocaleTimeString()}
@@ -41,7 +41,7 @@ const PhotoBox = (props) => {
         <p>
           Filter: <mark>{getFilter(photoData)}</mark>
         </p>
-          <mark>{getHashtag(photoData)}</mark>
+          <mark><small>{getHashtag(photoData)}</small></mark>
 
       </div>
     </div>

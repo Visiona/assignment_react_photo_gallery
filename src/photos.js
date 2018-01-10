@@ -1950,7 +1950,7 @@ const instagramResponse = {
       },
       "images": {
         "low_resolution": {
-          "url": "https://scontent.cdninstagram.com/hphotos-xaf1/t51.2885-15/s320x320/e35/11909922_918180431578254_62598068_n.jpg",
+          "url": "https://d31lqvyoeoymzk.cloudfront.net/pub/media/instagram/images/low_resolution/1684281815331894161_207328655_66848.jpg",
           "width": 320,
           "height": 320
         },

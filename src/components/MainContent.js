@@ -4,9 +4,10 @@ import Dropdown from './elements/Dropdown'
 import Gallery from './Gallery'
 import Pagination from './Pagination'
 import instagramResponse from '../photos.js'
-import {set, sortedPhotosUp, sortedPhotosDown} from '../helpers/jsonScraper'
+import {set, sortedPhotosUp, sortedPhotosDown, searchPhrase} from '../helpers/jsonScraper'
 import SortButton from './elements/SortButton'
 import placeholderImg from '../320x320.png';
+import Input from './elements/Input'
 
 const optionsFilters = [
   'All',
@@ -29,7 +30,8 @@ class Navbar extends Component {
       totalPages: Math.ceil(instagramResponse['data'].length/12),
       filteredPhotos: instagramResponse['data'],
       currentPhotos: instagramResponse['data'].slice(0, 12),
-      order: 'none'
+      order: 'none',
+      inputValue: ''
     }
   }
 
@@ -47,22 +49,19 @@ class Navbar extends Component {
         totalPages: Math.ceil( afterFiltering.length/12 )
       })
     } else {
+      let noFilter = instagramResponse['data'];
       this.setState({
         filter: 'All',
-        filteredPhotos: instagramResponse['data'],
+        filteredPhotos: noFilter ,
         currentPage: '1',
-        currentPhotos: instagramResponse['data'].slice(0, 12),
-        totalPages: Math.ceil(filteredPhotos.length/12)
+        currentPhotos: noFilter.slice(0, 12),
+        totalPages: Math.ceil(noFilter.length/12)
       })
     }
   }
 
   onSorting = (e) => {
     const {filteredPhotos, order} = this.state;
-    console.log('I am in onSorting')
-    console.log( filteredPhotos )
-    console.log( sortedPhotosUp(filteredPhotos) )
-
     if (order === 'decrease') {
       this.setState({
         filteredPhotos: sortedPhotosDown(filteredPhotos),
@@ -84,9 +83,7 @@ class Navbar extends Component {
 
   onChangePage = (e, i) => {
     const {filteredPhotos, allPhotosData, totalPages} = this.state;
-    console.log('page number in on change is ' + i)
     let indexOfLastPhoto = i*12;
-    console.log('idnex of last page is: ' + i)
     let indexOfFirstPhoto = indexOfLastPhoto - 12;
     let currentPhotos = filteredPhotos.slice(indexOfFirstPhoto, indexOfLastPhoto)
     this.setState({
@@ -96,8 +93,24 @@ class Navbar extends Component {
     })
   }
 
+  onSearch = (e) => {
+    let searchResults = searchPhrase(instagramResponse['data'], e.target.value)
+    console.log('here is result of my search: ')
+    console.log(searchResults)
+    console.log('and teh value of target is: ' +  e.target.value)
+    if ( searchResults ) {
+      this.setState({
+        filteredPhotos: searchResults,
+        currentPage: '1',
+        currentPhotos: searchResults.slice(0, 12),
+        totalPages: Math.ceil( searchResults.length/12 ),
+        inputValue: e.target.value
+      })
+    }
+  }
+
   render() {
-    const {filter, totalPages, currentPage, currentPhotos, filteredPhotos, order} = this.state
+    const {filter, totalPages, currentPage, currentPhotos, filteredPhotos, order, inputValue} = this.state
     const allPhotosData = instagramResponse['data'];
 
     return (
@@ -107,14 +120,12 @@ class Navbar extends Component {
 
           <form className="navbar-form">
             <InputGroup name='Search' labelText='Search'>
-              <input type="text" className="form-control" placeholder="Search" />
+              <Input name='inputValue' onChange={this.onSearch} value={inputValue} />
             </InputGroup>
 
             <ul className="nav navbar-nav navbar-right">
 
-
               <SortButton onSorting={this.onSorting} order={order} />
-
 
               <InputGroup name='filters' labelText='Filters'>
                 <Dropdown name='filters' value={filter} options={optionsFilters} onChange={this.onChangeFilter} />
