@@ -5,6 +5,7 @@ import Gallery from './Gallery'
 import Pagination from './Pagination'
 import instagramResponse from '../photos.js'
 import {set} from '../helpers/jsonScraper'
+import SortButton from './elements/SortButton'
 
 const optionsFilters = [
   'All',
@@ -33,29 +34,38 @@ class Navbar extends Component {
 
 
   onChangeFilter = (e) => {
-
+    const {filteredPhotos, totalPages} = this.state;
     if (e.target.value !== 'All') {
+      let afterFiltering = set(instagramResponse['data'], e.target.value);
       this.setState({
         filter: e.target.value,
-        filteredPhotos: set(instagramResponse['data'], e.target.value)
+        filteredPhotos: afterFiltering,
+        currentPage: '1',
+        currentPhotos: afterFiltering.slice(0, 12),
+        totalPages: Math.ceil( afterFiltering.length/12 )
       })
     } else {
       this.setState({
         filter: 'All',
-        filteredPhotos: instagramResponse['data']
+        filteredPhotos: instagramResponse['data'],
+        currentPage: '1',
+        currentPhotos: instagramResponse['data'].slice(0, 12),
+        totalPages: Math.ceil(filteredPhotos.length/12)
       })
     }
   }
 
-  onChangePage = (e) => {
-    const {filteredPhotos, allPhotosData} = this.state;
-    console.log('page number in on change is ' + e.target.key)
-    let indexOfLastPhoto = (e.target.value)*12;
+  onChangePage = (e, i) => {
+    const {filteredPhotos, allPhotosData, totalPages} = this.state;
+    console.log('page number in on change is ' + i)
+    let indexOfLastPhoto = i*12;
+    console.log('idnex of last page is: ' + i)
     let indexOfFirstPhoto = indexOfLastPhoto - 12;
     let currentPhotos = filteredPhotos.slice(indexOfFirstPhoto, indexOfLastPhoto)
     this.setState({
-      currentPage: e.target.key,
-      currentPhotos: filteredPhotos.slice(indexOfFirstPhoto, indexOfLastPhoto)
+      currentPage: i,
+      currentPhotos: filteredPhotos.slice(indexOfFirstPhoto, indexOfLastPhoto),
+      totalPages: Math.ceil(filteredPhotos.length/12)
     })
   }
 
@@ -74,6 +84,11 @@ class Navbar extends Component {
             </InputGroup>
 
             <ul className="nav navbar-nav navbar-right">
+
+
+              <SortButton order='growing' />
+
+
               <InputGroup name='filters' labelText='Filters'>
                 <Dropdown name='filters' value={filter} options={optionsFilters} onChange={this.onChangeFilter} />
               </InputGroup>
