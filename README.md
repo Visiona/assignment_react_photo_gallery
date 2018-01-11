@@ -1,6 +1,10 @@
 # Photo Gallery with React
 
-This small application is using provided json file being excerpt from data retrieved from Instagram. App is loading all photos fro json. Here I also build in React sorting function, filtering via dropdown list and live search form where user can search for username or a specific caption in the photos.
+This small application is using provided json file being excerpt from data retrieved from Instagram. App is loading all photos fro json. Here I also build in React:
+  - sorting feature,
+  - filtering via dropdown list
+  - live search form where user can search for username or a specific caption in the photos
+  - pagination
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
