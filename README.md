@@ -1,19 +1,19 @@
 # Photo Gallery with React
 
-- to search and sort all our selfies using React
+This small application is using provided json file being excerpt from data retrieved from Instagram. App is loading all photos fro json. Here I also build in React sorting function, filtering via dropdown list and live search form where user can search for username or a specific caption in the photos.
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 
 <p align="center">
-  <img src="/public/img/live_view.png" width="650"/>
+  <img src="/public/img/preview.png" width="650"/>
 </p>
 
 ## Getting Started
 
 If you have [installed node](https://nodejs.org/en/download/) on your computer, type the following commands. User Node version newer than v5.9.1.
 
-```
+```bash
 $ npm start
 ```
 
