@@ -10,7 +10,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 
 <p align="center">
-  <img src="/public/img/preview.png" width="650"/>
+  <img src="/public/preview.png" width="650"/>
 </p>
 
 ## Getting Started
